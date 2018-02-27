@@ -29,15 +29,23 @@
 #include "util/reader_document.hpp"
 #include "util/reader_mapping.hpp"
 #include "util/writer.hpp"
+#include "coords.h"
+#include "supertux\main.hpp"
 
 /* this is the fractional distance toward the peek
    position to move each frame; lower is slower,
    0 is never get there, 1 is instant */
 static const float PEEK_ARRIVE_RATIO = 0.1;
 
+//MyGaze eyeObj;
+
+//int eyeFocusX;
+//int eyeFocusY;
+
 class CameraConfig
 {
 public:
+
   // 0 = No, 1 = Fix, 2 = Mario/Yoshi, 3 = Kirby, 4 = Super Metroid-like
   int xmode;
   // as above
@@ -113,6 +121,7 @@ public:
       camconfig.get("edge-x", edge_x);
       camconfig.get("sensitive-x", sensitive_x);
       camconfig.get("dynamic-speed-sm", dynamic_speed_sm);
+
     }
   }
 };
@@ -273,6 +282,11 @@ static const float CAMERA_EPSILON = .00001f;
 void
 Camera::update(float elapsed_time)
 {
+  //SDL_GetMouseState(&eyeFocusX, &eyeFocusY);
+
+//  eyeFocusX = eyeObj.m_coord.x;
+ // eyeFocusY = eyeObj.m_coord.y;
+
   switch(mode) {
     case NORMAL:
       update_scroll_normal(elapsed_time);

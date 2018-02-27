@@ -128,12 +128,7 @@ ItemNumField::process_action(const MenuAction& action) {
       }
     } while ( (last_char & 128) && !(last_char & 64) );
     if (input.length() && input != "-") {
-      try {
-        *number = std::stof(input);
-      }
-      catch(...) {
-        input = std::to_string(*number);
-      }
+      *number = std::stof(input);
     } else {
       *number = 0;
     }

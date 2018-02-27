@@ -17,9 +17,11 @@
 #include "SDL.h"
 
 #include "supertux/main.hpp"
+#include "coords.h"
 
 int main(int argc, char** argv)
 {
+  //MyGaze eyeObj;
   return Main().run(argc, argv);
 }
 

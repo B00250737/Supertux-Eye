@@ -18,7 +18,6 @@
 
 #include <algorithm>
 
-#include "editor/editor.hpp"
 #include "object/player.hpp"
 #include "sprite/sprite.hpp"
 #include "sprite/sprite_manager.hpp"
@@ -36,7 +35,7 @@ InfoBlock::InfoBlock(const ReaderMapping& lisp) :
   lines(),
   lines_height(0)
 {
-  if(!lisp.get("message", message) && !(Editor::is_active())) {
+  if(!lisp.get("message", message)) {
     log_warning << "No message in InfoBlock" << std::endl;
   }
   //stopped = false;

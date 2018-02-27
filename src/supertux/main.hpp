@@ -17,6 +17,13 @@
 #ifndef HEADER_SUPERTUX_SUPERTUX_MAIN_HPP
 #define HEADER_SUPERTUX_SUPERTUX_MAIN_HPP
 
+#include "coords.h"
+
+//extern int eyeFocusX;
+//extern int eyeFocusY;
+
+extern MyGaze eyeObj;
+
 class Main
 {
 private:
@@ -29,6 +36,8 @@ public:
   /** We call it run() instead of main() as main collides with
       #define main SDL_main from SDL.h */
   int run(int argc, char** argv);
+
+
 };
 
 #endif

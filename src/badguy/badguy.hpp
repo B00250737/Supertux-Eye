@@ -24,6 +24,9 @@
 #include "supertux/physic.hpp"
 #include "supertux/timer.hpp"
 
+#include "coords.h"
+#include "supertux/main.hpp"
+
 class Player;
 class Bullet;
 
@@ -120,7 +123,8 @@ public:
   bool is_in_water() const;
 
   /** Get melting particle sprite filename */
-  virtual std::string get_water_sprite() const {
+  virtual std::string get_water_sprite() const
+  {
     return "images/objects/water_drop/water_drop.sprite";
   }
 
@@ -161,6 +165,12 @@ protected:
 
   /** called each frame when the badguy is not activated. */
   virtual void inactive_update(float elapsed_time);
+
+  //Called to determine if the eye tracking coordinates are within the bounding box
+  virtual bool eye_bounding(int val);
+
+  //Called when the user's attention is focused on the enemy
+  virtual void eye_react() {};
 
   /** called immediately before the first call to initialize */
   virtual void initialize();

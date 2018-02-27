@@ -25,12 +25,17 @@
 #include "scripting/exposed_object.hpp"
 #include "supertux/game_object.hpp"
 #include "supertux/timer.hpp"
+#include "coords.h"
+#include "supertux/main.hpp"
 
 class Sector;
 class Path;
 class PathWalker;
 class ReaderMapping;
 class CameraConfig;
+//
+//extern int eyeFocusX;
+//extern int eyeFocusY;
 
 class Camera : public GameObject,
                public ExposedObject<Camera, scripting::Camera>

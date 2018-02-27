@@ -40,4 +40,11 @@ SnowBall::collision_squished(GameObject& object)
   return true;
 }
 
+void
+SnowBall::eye_react()
+{
+  set_state(STATE_SQUISHED);
+  //set_state(STATE_BURNING);
+}
+
 /* EOF */

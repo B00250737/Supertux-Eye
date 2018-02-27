@@ -24,8 +24,6 @@
 #include <sexp/io.hpp>
 
 #include "editor/editor.hpp"
-#include "supertux/gameconfig.hpp"
-#include "supertux/globals.hpp"
 #include "supertux/tile_set.hpp"
 #include "util/reader_document.hpp"
 #include "util/reader_mapping.hpp"
@@ -76,10 +74,6 @@ TileSetParser::parse()
     {
       log_warning << "Unknown symbol '" << iter.get_key() << "' in tileset file" << std::endl;
     }
-  }
-  if(g_config->developer_mode)
-  {
-    m_tileset.add_unassigned_tilegroup();
   }
 }
 

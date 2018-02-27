@@ -42,6 +42,8 @@ public:
   void freeze();
   bool is_freezable() const;
 
+  void eye_react();
+
   void kill_fall();
   void ignite();
   std::string get_class() const {
@@ -68,6 +70,7 @@ private:
   Ticking_State tstate;
   bool grabbed;
   MovingObject* grabber;
+  bool fused;
 
   std::unique_ptr<SoundSource> ticking;
 };

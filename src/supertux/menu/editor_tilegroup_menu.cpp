@@ -61,10 +61,8 @@ EditorTilegroupMenu::menu_action(MenuItem* item)
 {
   if (item->id >= 0)
   {
-    auto editor = Editor::current();
-    auto tileselect = &(editor->tileselect);
-    auto tilegroup = editor->tileset->tilegroups[item->id];
-    tileselect->active_tilegroup.reset(new Tilegroup(tilegroup));
+    auto tileselect = &(Editor::current()->tileselect);
+    tileselect->active_tilegroup = Editor::current()->tileset->tilegroups[item->id].tiles;
     tileselect->input_type = EditorInputGui::IP_TILE;
     tileselect->reset_pos();
     tileselect->update_mouse_icon();

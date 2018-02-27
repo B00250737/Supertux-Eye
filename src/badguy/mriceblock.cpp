@@ -136,18 +136,28 @@ HitResponse
 MrIceBlock::collision_player(Player& player, const CollisionHit& hit)
 {
   // handle kicks from left or right side
-  if(ice_state == ICESTATE_FLAT && get_state() == STATE_ACTIVE) {
-    if(hit.left) {
+  if(ice_state == ICESTATE_FLAT && get_state() == STATE_ACTIVE)
+  {
+    if(hit.left)
+    {
       dir = RIGHT;
       player.kick();
       set_state(ICESTATE_KICKED);
       return FORCE_MOVE;
-    } else if(hit.right) {
+    }
+    else if(hit.right)
+    {
       dir = LEFT;
       player.kick();
       set_state(ICESTATE_KICKED);
       return FORCE_MOVE;
     }
+  }
+
+  if (ice_state == ICESTATE_NORMAL && get_state() == STATE_ACTIVE)
+  {
+ //   player. = true;
+    player.stone = true;
   }
 
   return BadGuy::collision_player(player, hit);

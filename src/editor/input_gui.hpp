@@ -22,7 +22,6 @@
 #include "control/input_manager.hpp"
 #include "math/vector.hpp"
 #include "supertux/screen.hpp"
-#include "supertux/tile_set.hpp"
 
 class SDL_event;
 class TileSet;
@@ -53,7 +52,7 @@ class EditorInputGui
     } InputType;
     InputType input_type;
 
-    std::unique_ptr<Tilegroup> active_tilegroup;
+    std::vector<int> active_tilegroup;
     int active_objectgroup;
     std::unique_ptr<ObjectInput> object_input;
 
@@ -88,8 +87,6 @@ class EditorInputGui
     int get_tile_pos(const Vector& coords) const;
     Vector get_tool_coords(const int pos) const;
     int get_tool_pos(const Vector& coords) const;
-
-    Rectf get_item_rect(const HoveredItem& item) const;
 
     void update_selection();
     Rectf normalize_selection() const;

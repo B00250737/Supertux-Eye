@@ -36,6 +36,7 @@ GoldBomb::GoldBomb(const ReaderMapping& reader) :
 {
   walk_speed = 80;
   max_drop_height = 16;
+  fused = true;
 
   //Prevent stutter when Tux jumps on Gold Bomb
   SoundManager::current()->preload("sounds/explosion.wav");
@@ -50,6 +51,12 @@ GoldBomb::GoldBomb(const ReaderMapping& reader) :
   }
   //Replace sprite
   sprite = SpriteManager::current()->create( sprite_name );
+}
+
+void
+GoldBomb::eye_react()
+{
+  fused = false;
 }
 
 void
@@ -107,13 +114,16 @@ bool
 GoldBomb::collision_squished(GameObject& object)
 {
   Player* player = dynamic_cast<Player*>(&object);
-  if(player && player->is_invincible()) {
+  if(player && player->is_invincible())
+  {
     player->bounce(*this);
     kill_fall();
     return true;
   }
-  if(is_valid() && tstate == STATE_NORMAL) {
-    tstate = STATE_TICKING;
+  if(is_valid() && tstate == STATE_NORMAL)
+  {
+    if (fused == true) { kill_fall(); } //Detonate
+  /*  tstate = STATE_TICKING;
     frozen = false;
     set_action(dir == LEFT ? "ticking-left" : "ticking-right", 1);
     physic.set_velocity_x(0);
@@ -126,7 +136,7 @@ GoldBomb::collision_squished(GameObject& object)
     ticking->set_looping(true);
     ticking->set_gain(2.0);
     ticking->set_reference_distance(32);
-    ticking->play();
+    ticking->play();*/
   }
   return true;
 }

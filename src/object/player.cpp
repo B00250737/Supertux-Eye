@@ -163,7 +163,7 @@ Player::Player(PlayerStatus* _player_status, const std::string& name_) :
   // if/when we have complete penny gfx, we can
   // load those instead of Tux's sprite in the
   // constructor
-  sprite(SpriteManager::current()->create("images/creatures/tux/tux.sprite")),
+  sprite(SpriteManager::current()->create("images/creatures/angrystone/angrystone.sprite")),
   airarrow(Surface::create("images/engine/hud/airarrow.png")),
   floor_normal(),
   ghost_mode(false),

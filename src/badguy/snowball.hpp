@@ -31,8 +31,11 @@ public:
     return _("Snowball");
   }
 
+  void eye_react();
+
 protected:
   bool collision_squished(GameObject& object);
+
 
 };
 

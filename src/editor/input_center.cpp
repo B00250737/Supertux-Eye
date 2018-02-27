@@ -56,8 +56,6 @@
 #include "video/video_system.hpp"
 #include "math/vector.hpp"
 
-#include <math.h>
-
 bool EditorInputCenter::render_grid = true;
 bool EditorInputCenter::snap_to_grid = false;
 int EditorInputCenter::selected_snap_grid_size = 3;
@@ -613,13 +611,6 @@ EditorInputCenter::process_right_click() {
 Rectf
 EditorInputCenter::tile_drag_rect() {
   Rectf result = drag_rect();
-
-  // Increase drag rectangle size to the
-  // nearest tile border respectively.
-  result = Rectf(floor(result.p1.x / 32) * 32, 
-                 floor(result.p1.y / 32) * 32,
-                 ceil(result.p2.x / 32) * 32,
-                 ceil(result.p2.y / 32) * 32);
   result.p1 = sp_to_tp(result.p1);
   result.p2 = sp_to_tp(result.p2);
   return result;
@@ -628,6 +619,7 @@ EditorInputCenter::tile_drag_rect() {
 Rectf
 EditorInputCenter::selection_draw_rect() {
   Rectf select = tile_drag_rect();
+  select.p2 += Vector(1, 1);
   select.p1 = tile_screen_pos(select.p1);
   select.p2 = tile_screen_pos(select.p2);
   return select;
@@ -643,13 +635,13 @@ EditorInputCenter::update_tile_selection() {
   }
 
   tiles->tiles.clear();
-  tiles->width = select.get_width();
-  tiles->height = select.get_height();
+  tiles->width = select.get_width() + 1;
+  tiles->height = select.get_height() + 1;
 
   int w = tilemap->get_width();
   int h = tilemap->get_height();
-  for (int y = select.p1.y; y < select.p2.y; y++) {
-    for (int x = select.p1.x; x < select.p2.x; x++) {
+  for (int y = select.p1.y; y <= select.p2.y; y++) {
+    for (int x = select.p1.x; x <= select.p2.x; x++) {
       if ( x < 0 || y < 0 || x >= w || y >= h) {
         tiles->tiles.push_back(0);
       } else {
@@ -714,26 +706,12 @@ EditorInputCenter::event(SDL_Event& ev) {
       }
     } break;
     case SDL_KEYDOWN:
-    {
-      auto key = ev.key.keysym.sym;
-      if (key == SDLK_F8) {
+      if (ev.key.keysym.sym == SDLK_F8) {
         render_grid = !render_grid;
-      }
-      if (key == SDLK_F7 || key == SDLK_LSHIFT || key == SDLK_RSHIFT) {
+      } else if (ev.key.keysym.sym == SDLK_F7) {
         snap_to_grid = !snap_to_grid;
       }
-    }
-    break;
-
-    case SDL_KEYUP:
-    {
-      auto key = ev.key.keysym.sym;
-      if(key == SDLK_LSHIFT || key == SDLK_RSHIFT)
-      {
-        snap_to_grid = !snap_to_grid;
-      }
-    }
-    break;
+      break;
     default:
       break;
   }

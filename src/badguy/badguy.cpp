@@ -33,6 +33,9 @@
 #include "supertux/tile.hpp"
 #include "util/reader_mapping.hpp"
 
+#include "coords.h"
+#include "supertux/main.hpp"
+
 #include <math.h>
 #include <sstream>
 
@@ -68,6 +71,8 @@ BadGuy::BadGuy(const Vector& pos, const std::string& sprite_name_, int layer_,
 {
   start_position = bbox.p1;
 
+  std::cout << "Badguy created" << std::endl;
+
   SoundManager::current()->preload("sounds/squish.wav");
   SoundManager::current()->preload("sounds/fall.wav");
   SoundManager::current()->preload("sounds/splash.ogg");
@@ -102,6 +107,8 @@ BadGuy::BadGuy(const Vector& pos, Direction direction, const std::string& sprite
 {
   start_position = bbox.p1;
 
+  std::cout << "Badguy created" << std::endl;
+
   SoundManager::current()->preload("sounds/squish.wav");
   SoundManager::current()->preload("sounds/fall.wav");
   SoundManager::current()->preload("sounds/splash.ogg");
@@ -135,6 +142,8 @@ BadGuy::BadGuy(const ReaderMapping& reader, const std::string& sprite_name_, int
   colgroup_active(COLGROUP_MOVING)
 {
   start_position = bbox.p1;
+
+  std::cout << "Badguy created" << std::endl;
 
   std::string dir_str = "auto";
   reader.get("direction", dir_str);
@@ -179,7 +188,8 @@ BadGuy::draw(DrawingContext& context)
 void
 BadGuy::update(float elapsed_time)
 {
-  if(!Sector::current()->inside(bbox)) {
+  if(!Sector::current()->inside(bbox))
+  {
     run_dead_script();
     is_active_flag = false;
     remove_me();
@@ -200,12 +210,11 @@ BadGuy::update(float elapsed_time)
     set_state(STATE_INACTIVE);
   }
 
-  switch(state) {
+  switch(state)
+  {
     case STATE_ACTIVE:
       is_active_flag = true;
-      if (Editor::is_active()) {
-        break;
-      }
+      if (Editor::is_active()){ break; }
       active_update(elapsed_time);
       break;
     case STATE_INIT:
@@ -224,7 +233,8 @@ BadGuy::update(float elapsed_time)
     case STATE_GEAR:
     case STATE_SQUISHED:
       is_active_flag = false;
-      if(state_timer.check()) {
+      if(state_timer.check())
+      {
         remove_me();
         break;
       }
@@ -310,16 +320,38 @@ BadGuy::deactivate()
 {
 }
 
-void
-BadGuy::active_update(float elapsed_time)
+bool
+BadGuy::eye_bounding(int val)
 {
-  movement = physic.get_movement(elapsed_time);
-  if(frozen)
-    sprite->stop_animation();
+  if(((bbox.p1.x - val) <= eyeObj.m_coord.x) && ((bbox.p2.x + val) >= eyeObj.m_coord.x) && ((bbox.p1.y + val) >= eyeObj.m_coord.y) && ((bbox.p2.y - val) <= eyeObj.m_coord.y))
+  {
+    return true;
+  }
+  else return false;
 }
 
 void
-BadGuy::inactive_update(float )
+BadGuy::active_update(float elapsed_time)
+{
+ /* if (((bbox.p1.x) <= eyeFocusX) && ((bbox.p2.x) >= eyeFocusX) && ((bbox.p1.y) >= eyeFocusY) && ((bbox.p2.y) <= eyeFocusY))
+  {
+    kill_fall();
+  }*/
+  if (eye_bounding(450) == true)
+  {
+    //eye_react();
+    kill_fall();
+  } 
+
+  movement = physic.get_movement(elapsed_time);
+  if (frozen)
+  {
+    sprite->stop_animation();
+  }
+}
+
+void
+BadGuy::inactive_update(float)
 {
 }
 
@@ -378,16 +410,19 @@ BadGuy::collision(GameObject& other, const CollisionHit& hit)
 
     // hit from above?
     if (player->get_bbox().p2.y < (bbox.p1.y + 16)) {
-      if(player->is_stone()) {
+      if(player->is_stone())
+      {
         kill_fall();
         return FORCE_MOVE;
       }
-      if(collision_squished(*player)) {
+      if(collision_squished(*player))
+      {
         return FORCE_MOVE;
       }
     }
 
-    if(player->is_stone()) {
+    if(player->is_stone())
+    {
       collision_solid(hit);
       return FORCE_MOVE;
     }
@@ -413,15 +448,11 @@ BadGuy::collision_solid(const CollisionHit& hit)
 HitResponse
 BadGuy::collision_player(Player& player, const CollisionHit& )
 {
-  if(player.is_invincible()) {
+  if(player.is_invincible())
+  {
     kill_fall();
     return ABORT_MOVE;
   }
-
-  //TODO: unfreeze timer
-  if(frozen)
-    //unfreeze();
-    return FORCE_MOVE;
 
   player.kill(false);
   return FORCE_MOVE;

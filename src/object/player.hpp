@@ -91,6 +91,7 @@ public:
   {
     return dying;
   }
+  bool stone;
   Direction peeking_direction_x() const
   {
     return peekingX;
@@ -284,7 +285,7 @@ private:
   Direction peekingX;
   Direction peekingY;
   float ability_time;
-  bool stone;
+  
   bool swimming;
   float speedlimit;
   Controller* scripting_controller_old; /**< Saves the old controller while the scripting_controller is used */

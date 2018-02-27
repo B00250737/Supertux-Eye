@@ -69,6 +69,8 @@ extern "C" {
 #include "video/renderer.hpp"
 #include "worldmap/worldmap.hpp"
 
+MyGaze eyeObj;
+
 class ConfigSubsystem
 {
 public:
@@ -362,6 +364,7 @@ static inline void timelog(const char* component)
 void
 Main::launch_game()
 {
+  
 
   SDLSubsystem sdl_subsystem;
   ConsoleBuffer console_buffer;
